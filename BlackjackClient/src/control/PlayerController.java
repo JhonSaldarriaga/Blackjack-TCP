@@ -8,12 +8,11 @@ import comm.TCPConnection.OnConnectionListener;
 import javafx.application.Platform;
 import model.Card;
 import model.PlayersDeckOfCards;
-import model.PlayersDeckOfCards.CardSpaceFullListener;
 import model.Status;
 import model.TurnAction;
 import view.PlayerWindow;
 
-public class PlayerController implements OnMessageListener, OnConnectionListener, CardSpaceFullListener{
+public class PlayerController implements OnMessageListener, OnConnectionListener{
 	
 	private PlayerWindow view;
 	private TCPConnection connection;
@@ -26,7 +25,6 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 	
 	public void init() {
 		game = new PlayersDeckOfCards();
-		game.setCardSpaceListener(this);
 		connection = TCPConnection.getInstance();
 		connection.setPuerto(5000);
 		connection.setIp("127.0.0.1");
@@ -54,6 +52,13 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 		connection.start();
 	}
 
+	public void cardSpaceFull() {
+		view.disableButtons(true);
+		Gson gson = new Gson();
+		String json = gson.toJson(new TurnAction(TurnAction.STAND));
+		connection.getEmisor().sendMessage(json);
+	}
+	
 	@Override
 	public void onConnection() {
 		System.out.println("Me encuentro conectado en el servidor.");
@@ -69,6 +74,7 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 					view.setCard(c);
 				}
 		);
+		if(game.amountCards()==PlayersDeckOfCards.MAX_CARDS)cardSpaceFull();
 	}
 
 	@Override
@@ -129,13 +135,5 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 			break;
 		default:
 		}
-	}
-
-	@Override
-	public void cardSpaceFull() {
-		view.disableButtons(true);
-		Gson gson = new Gson();
-		String json = gson.toJson(new TurnAction(TurnAction.STAND));
-		connection.getEmisor().sendMessage(json);
 	}
 }

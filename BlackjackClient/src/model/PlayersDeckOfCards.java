@@ -7,7 +7,6 @@ public class PlayersDeckOfCards {
 	
 	public static final int MAX_CARDS = 5;
 	
-	private CardSpaceFullListener cardSpaceListener;
 	private Card[] cards;
 	
 	public PlayersDeckOfCards() {
@@ -18,10 +17,13 @@ public class PlayersDeckOfCards {
 		for(int i=0;i<MAX_CARDS;i++) {
 			if(cards[i]==null) {
 				cards[i]=card;
-				if(i==MAX_CARDS-1)cardSpaceListener.cardSpaceFull();
 				break;
 			}
 		}
+	}
+	
+	public int amountCards() {
+		return cards.length;
 	}
 	
 	public int countValue() {
@@ -32,13 +34,5 @@ public class PlayersDeckOfCards {
 			}
 		}
 		return cont;
-	}
-	
-	public void setCardSpaceListener(CardSpaceFullListener cardSpaceListener) {
-		this.cardSpaceListener = cardSpaceListener;
-	}
-
-	public interface CardSpaceFullListener{
-		public void cardSpaceFull();
 	}
 }

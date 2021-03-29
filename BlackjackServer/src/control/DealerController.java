@@ -17,8 +17,8 @@ public class DealerController implements OnMessageListener, OnConnectionListener
 	private TCPConnection connection;
 	private Game game;
 	private DealersDeckOfCards deckOfCards;
-	public String player1ID;
-	public String player2ID;
+	public String player1ID = null;
+	public String player2ID = null;
 	
 	public DealerController() {}
 	
@@ -36,8 +36,8 @@ public class DealerController implements OnMessageListener, OnConnectionListener
 	private void startGame() {
 		Gson gson = new Gson();
 		connection.sendDirectMessage(player1ID, gson.toJson(deckOfCards.generateRandomCard()));
-		connection.sendDirectMessage(player2ID, gson.toJson(deckOfCards.generateRandomCard()));
 		connection.sendDirectMessage(player1ID, gson.toJson(deckOfCards.generateRandomCard()));
+		connection.sendDirectMessage(player2ID, gson.toJson(deckOfCards.generateRandomCard()));
 		connection.sendDirectMessage(player2ID, gson.toJson(deckOfCards.generateRandomCard()));
 		connection.sendDirectMessage(player1ID, gson.toJson(new Status(Status.YOUR_TURN)));
 		connection.sendDirectMessage(player2ID, gson.toJson(new Status(Status.OPPONENT_TURN)));
