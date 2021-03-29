@@ -2,20 +2,19 @@ package model;
 
 public class Game {
 
+	private EndGameListener endGameListener;
 	private final int BLACK_JACK=21;
 	private PlayersDeckOfCards playerOne;
 	private PlayersDeckOfCards playerTwo;
 	
 	public void setPlayerOne(PlayersDeckOfCards playerOne) {
 		this.playerOne = playerOne;
-		if(playerTwo!=null);
-		//evento de terminar juego
+		if(playerTwo!=null)endGameListener.endGame();
 	}
 
 	public void setPlayerTwo(PlayersDeckOfCards playerTwo) {
 		this.playerTwo = playerTwo;
-		if(playerOne!=null);
-		//evento de terminar juego
+		if(playerOne!=null)endGameListener.endGame();
 	}
 	
 	public int getValuePlayerOne() {
@@ -37,5 +36,13 @@ public class Game {
 			return 2;
 		else
 			return 1;
+	}
+	
+	public void setEndGameListener(EndGameListener endGameListener) {
+		this.endGameListener = endGameListener;
+	}
+
+	public interface EndGameListener{
+		public void endGame();
 	}
 }

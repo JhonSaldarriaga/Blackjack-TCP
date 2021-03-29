@@ -1,17 +1,23 @@
 package control;
 
-import comm.TCPConnection;
+import com.google.gson.Gson;
+
 import comm.Receptor.OnMessageListener;
+import comm.TCPConnection;
 import comm.TCPConnection.OnConnectionListener;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import model.Card;
+import model.PlayersDeckOfCards;
+import model.PlayersDeckOfCards.CardSpaceFullListener;
+import model.Status;
+import model.TurnAction;
 import view.PlayerWindow;
 
-public class PlayerController implements OnMessageListener, OnConnectionListener{
+public class PlayerController implements OnMessageListener, OnConnectionListener, CardSpaceFullListener{
 	
 	private PlayerWindow view;
 	private TCPConnection connection;
+	private PlayersDeckOfCards game;
 	
 	public PlayerController(PlayerWindow view) {
 		this.view = view;
@@ -19,24 +25,117 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 	}
 	
 	public void init() {
+		game = new PlayersDeckOfCards();
+		game.setCardSpaceListener(this);
+		connection = TCPConnection.getInstance();
+		connection.setPuerto(5000);
+		connection.setIp("127.0.0.1");
+		connection.setConnectionListener(this);
+		connection.setListenerOfMessages(this);
 		
+		view.getTakeCard().setOnAction(
+				event ->{
+					view.disableButtons(true);
+					Gson gson = new Gson();
+					String json = gson.toJson(new TurnAction(TurnAction.TAKE_CARD));
+					connection.getEmisor().sendMessage(json);
+				}
+		);
+		
+		view.getStand().setOnAction(
+				event ->{
+					view.disableButtons(true);
+					Gson gson = new Gson();
+					String json = gson.toJson(new TurnAction(TurnAction.STAND));
+					connection.getEmisor().sendMessage(json);
+				}
+		);
+		
+		connection.start();
 	}
 
 	@Override
 	public void onConnection() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Me encuentro conectado en el servidor.");
 	}
 
 	@Override
 	public void receiveCard(String card) {
-		// TODO Auto-generated method stub
-		
+		Gson gson = new Gson();
+		Card c = gson.fromJson(card, Card.class);
+		game.addCard(c);
+		Platform.runLater(	
+				()->{
+					view.setCard(c);
+				}
+		);
 	}
 
 	@Override
 	public void receiveStatus(String status) {
-		// TODO Auto-generated method stub
-		
+		Gson gson = new Gson();
+		Status s = gson.fromJson(status, Status.class);
+		switch(s.getMsg()) {
+		case Status.STAND:
+			Platform.runLater(	
+					()->{
+						view.setStatus(Status.STAND, true);
+					}
+			);
+			String json = gson.toJson(game);
+			connection.getEmisor().sendMessage(json);
+			break;
+		case Status.OPPONENT_TURN:
+			Platform.runLater(	
+					()->{
+						view.setStatus(Status.OPPONENT_TURN, true);
+					}
+			);
+			break;
+		case Status.YOUR_TURN:
+			Platform.runLater(	
+					()->{
+						view.setStatus(Status.YOUR_TURN, true);
+						view.disableButtons(false);
+					}
+			);
+			break;
+		case Status.WINNER:
+			Platform.runLater(	
+					()->{
+						view.setStatus(Status.WINNER, true);
+						view.setStatus(Status.OWN_SCORE + s.getOwnScore() + " \\ " 
+						+ Status.OPPONENT_SCORE + s.getOpponentScore(), false);
+					}
+			);
+			break;
+		case Status.LOSER:
+			Platform.runLater(	
+					()->{
+						view.setStatus(Status.LOSER, true);
+						view.setStatus(Status.OWN_SCORE + s.getOwnScore() + " \\ " 
+						+ Status.OPPONENT_SCORE + s.getOpponentScore(), false);
+					}
+			);
+			break;
+		case Status.TIE:
+			Platform.runLater(	
+					()->{
+						view.setStatus(Status.TIE, true);
+						view.setStatus(Status.OWN_SCORE + s.getOwnScore() + " \\ " 
+						+ Status.OPPONENT_SCORE + s.getOpponentScore(), false);
+					}
+			);
+			break;
+		default:
+		}
+	}
+
+	@Override
+	public void cardSpaceFull() {
+		view.disableButtons(true);
+		Gson gson = new Gson();
+		String json = gson.toJson(new TurnAction(TurnAction.STAND));
+		connection.getEmisor().sendMessage(json);
 	}
 }

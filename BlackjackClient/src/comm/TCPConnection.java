@@ -1,13 +1,9 @@
 package comm;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
 import java.net.Socket;
+
 import comm.Receptor.OnMessageListener;
-import comm.TCPConnection.OnConnectionListener;
 
 public class TCPConnection extends Thread{
 
@@ -30,7 +26,7 @@ public class TCPConnection extends Thread{
 	private int puerto;
 	private Receptor receptor;
 	private Emisor emisor;
-	private OnMessageListener listener;
+	private OnMessageListener messageListener;
 	private OnConnectionListener connectionListener;
 	
 	
@@ -54,34 +50,30 @@ public class TCPConnection extends Thread{
 			connectionListener.onConnection();
 			
 			receptor = new Receptor(socket.getInputStream());
+			receptor.setListener(messageListener);
 			receptor.start();
 			
 			emisor = new Emisor(socket.getOutputStream());
 			
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	public void setListenerOfMessages(OnMessageListener listener) {
-		this.receptor.setListener(listener);
-	}
 	
-	public Emisor getEmisor() {
-		return this.emisor;
+	public void setListenerOfMessages(OnMessageListener messageListener) {
+		this.messageListener = messageListener;
 	}
 	
 	public void setConnectionListener(OnConnectionListener connectionListener) {
 		this.connectionListener = connectionListener;
 	}
 	
+	public Emisor getEmisor() {
+		return this.emisor;
+	}
 	
 	public interface OnConnectionListener{
 		public void onConnection();
 	}
-	
-	
-
-
 }
