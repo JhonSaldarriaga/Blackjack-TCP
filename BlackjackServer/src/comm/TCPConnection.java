@@ -48,9 +48,9 @@ public class TCPConnection extends Thread{
 				System.out.println("Nuevo cliente conectado");
 				String id = UUID.randomUUID().toString();
 				Session session = new Session(id, socket);
-				connectionListener.onConnection(id);
 				sessions.add(session);
 				setAllMessageListener(messageListener);
+				connectionListener.onConnection(id);
 			}
 			
 		} catch (IOException e) {
