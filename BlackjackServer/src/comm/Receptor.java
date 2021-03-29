@@ -5,11 +5,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import com.google.gson.Gson;
+
+import model.Generic;
+import model.PlayersDeckOfCards;
+import model.TurnAction;
+
 public class Receptor extends Thread{
 	
 	
 	private InputStream is; 
-	public OnMessageListener listener;
+	public OnMessageListener messageListener;
 	
 	
 	public Receptor(InputStream is) {
@@ -24,8 +30,18 @@ public class Receptor extends Thread{
 			
 			while(true) {	
 				String msg = breader.readLine();
-				if(listener != null) listener.OnMessage(msg);
-				else System.out.println("No hay observer");
+				Gson gson = new Gson();
+				Generic g = gson.fromJson(msg, Generic.class);
+				
+				switch(g.type) {
+				case TurnAction.TYPE_CLASS:
+					messageListener.receiveTurnAction(msg);
+					break;
+				case PlayersDeckOfCards.TYPE_CLASS:
+					messageListener.receivePlayersDeckOfCards(msg);
+					break;
+				default:System.out.println("Se envió una clase que no se debería enviar o hubo un error con gson");
+				};
 			}
 		
 		
@@ -38,13 +54,14 @@ public class Receptor extends Thread{
 	
 	
 	
-	public void setListener(OnMessageListener listener) {
-		this.listener = listener;
+	public void setListener(OnMessageListener messageListener) {
+		this.messageListener = messageListener;
 	}
 	
 	
 	public interface OnMessageListener{
-		public void OnMessage(String msg); 
+		public void receiveTurnAction(String turnAction); 
+		public void receivePlayersDeckOfCards(String playersDeckOfCards);
 	}
 	
 

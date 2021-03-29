@@ -32,11 +32,14 @@ public class DealerController implements OnMessageListener, OnConnectionListener
 	}
 
 	@Override
-	public void OnMessage(String msg) {
-		
+	public void receiveTurnAction(String turnAction) {
+		// TODO Auto-generated method stub
 		
 	}
 
-	
-
+	@Override
+	public void receivePlayersDeckOfCards(String playersDeckOfCards) {
+		// TODO Auto-generated method stub
+		
+	}
 }
