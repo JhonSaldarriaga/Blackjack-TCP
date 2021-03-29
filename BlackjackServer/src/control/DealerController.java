@@ -71,7 +71,8 @@ public class DealerController implements OnMessageListener, OnConnectionListener
 							()->{
 								try {
 									Thread.sleep(3000);
-									connection.sendDirectMessage(player1ID, gson.toJson(new Status(Status.YOUR_TURN)));
+									if(game.getPlayerOne()==null)
+										connection.sendDirectMessage(player1ID, gson.toJson(new Status(Status.YOUR_TURN)));
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
@@ -96,7 +97,8 @@ public class DealerController implements OnMessageListener, OnConnectionListener
 							()->{
 								try {
 									Thread.sleep(3000);
-									connection.sendDirectMessage(player2ID, gson.toJson(new Status(Status.YOUR_TURN)));
+									if(game.getPlayerTwo()==null)
+										connection.sendDirectMessage(player2ID, gson.toJson(new Status(Status.YOUR_TURN)));
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
