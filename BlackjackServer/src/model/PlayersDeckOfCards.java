@@ -23,7 +23,13 @@ public class PlayersDeckOfCards {
 	}
 	
 	public int amountCards() {
-		return cards.length;
+		int cont = 0;
+		for(int i=0;i<MAX_CARDS;i++) {
+			if(cards[i]!=null) {
+				cont++;
+			}
+		}
+		return cont;
 	}
 	
 	public int countValue() {
