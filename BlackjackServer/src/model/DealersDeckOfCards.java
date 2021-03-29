@@ -2,6 +2,15 @@ package model;
 
 public class DealersDeckOfCards {
 
+	private static DealersDeckOfCards instance = null;
+	private DealersDeckOfCards() {}
+	public static synchronized DealersDeckOfCards getInstance() {
+		if(instance == null) {
+			instance = new DealersDeckOfCards();
+		}
+		return instance;
+	}
+	
 	private final Card[] cards = 
 		{new Card(11, "AS"),new Card(11, "K"),new Card(11, "J"),new Card(11, "Q"),
 		new Card(2, "2p"),new Card(3, "3p"),new Card(4, "4p"),new Card(5, "5p"),

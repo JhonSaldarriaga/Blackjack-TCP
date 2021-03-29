@@ -19,7 +19,7 @@ public class Session{
 		try {
 			this.id = id;
 			this.socket = socket;
-			receptor = new Receptor(socket.getInputStream());
+			receptor = new Receptor(socket.getInputStream(),id);
 			receptor.start();
 			emisor = new Emisor(socket.getOutputStream());
 		} catch(IOException ex) {

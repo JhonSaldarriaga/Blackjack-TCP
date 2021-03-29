@@ -14,12 +14,14 @@ import model.TurnAction;
 public class Receptor extends Thread{
 	
 	
+	private String id;
 	private InputStream is; 
 	public OnMessageListener messageListener;
 	
 	
-	public Receptor(InputStream is) {
+	public Receptor(InputStream is, String id) {
 		this.is = is;
+		this.id = id;
 	}
 	
 	@Override
@@ -35,10 +37,10 @@ public class Receptor extends Thread{
 				
 				switch(g.type) {
 				case TurnAction.TYPE_CLASS:
-					messageListener.receiveTurnAction(msg);
+					messageListener.receiveTurnAction(msg, id);
 					break;
 				case PlayersDeckOfCards.TYPE_CLASS:
-					messageListener.receivePlayersDeckOfCards(msg);
+					messageListener.receivePlayersDeckOfCards(msg, id);
 					break;
 				default:System.out.println("Se envió una clase que no se debería enviar o hubo un error con gson");
 				};
@@ -60,8 +62,8 @@ public class Receptor extends Thread{
 	
 	
 	public interface OnMessageListener{
-		public void receiveTurnAction(String turnAction); 
-		public void receivePlayersDeckOfCards(String playersDeckOfCards);
+		public void receiveTurnAction(String turnAction, String id); 
+		public void receivePlayersDeckOfCards(String playersDeckOfCards, String id);
 	}
 	
 

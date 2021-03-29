@@ -33,8 +33,6 @@ public class TCPConnection extends Thread{
 	private ServerSocket server;
 	private ArrayList<Session> sessions;
 	
-	
-	
 	public void setPuerto(int puerto) {
 		this.puerto = puerto;
 	}
@@ -44,7 +42,7 @@ public class TCPConnection extends Thread{
 		try {
 			server = new ServerSocket(puerto);
 			
-			while(true) {
+			while(sessions.size()<2) {
 				System.out.println("Esperando en el puerto " + puerto);
 				Socket socket = server.accept();
 				System.out.println("Nuevo cliente conectado");
@@ -55,35 +53,26 @@ public class TCPConnection extends Thread{
 				setAllMessageListener(messageListener);
 			}
 			
-			
-			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	public void setAllMessageListener(OnMessageListener listener) {
-		for(int i=0 ; i<sessions.size() ; i++) {
-			Session s = sessions.get(i);
-			s.getReceptor().setListener(listener);
-		}		
 	}
 	
 	public void setConnectionListener(OnConnectionListener connectionListener) {
 		this.connectionListener = connectionListener;
 	}
 	
-	
-	
-	
-	public interface OnConnectionListener{
-		public void onConnection(String id);
-	}
-	
 	public void setMessageListener(OnMessageListener messageListener) {
 		this.messageListener = messageListener;
 	}
 	
+	public void setAllMessageListener(OnMessageListener listener) {
+		for(int i=0 ; i<sessions.size() ; i++) {
+			Session s = sessions.get(i);
+			s.getReceptor().setListener(listener);
+		}		
+	}
 	
 	public void sendBroadcast(String msg) {
 		
@@ -103,6 +92,8 @@ public class TCPConnection extends Thread{
 		}
 	}
 	
-
+	public interface OnConnectionListener{
+		public void onConnection(String id);
+	}
 
 }

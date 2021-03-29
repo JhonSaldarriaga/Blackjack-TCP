@@ -17,12 +17,12 @@ public class Game {
 		if(playerOne!=null)endGameListener.endGame();
 	}
 	
-	public int getValuePlayerOne() {
-		return playerOne.countValue();
+	public PlayersDeckOfCards getPlayerOne() {
+		return playerOne;
 	}
 	
-	public int getValuePlayerTwo() {
-		return playerTwo.countValue();
+	public PlayersDeckOfCards getPlayerTwo() {
+		return playerTwo;
 	}
 
 	public int getWinner() {
