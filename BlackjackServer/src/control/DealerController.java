@@ -1,26 +1,15 @@
 package control;
 
 import comm.Receptor.OnMessageListener;
-
-import java.util.Calendar;
-import java.util.UUID;
-
-import com.google.gson.Gson;
-
 import comm.TCPConnection;
 import comm.TCPConnection.OnConnectionListener;
 import javafx.application.Platform;
-import view.DealerWindow;
 
 public class DealerController implements OnMessageListener, OnConnectionListener{
 	
-	private DealerWindow view;
 	private TCPConnection connection;
 	
-	public DealerController(DealerWindow view) {
-		this.view = view;
-		init();
-	}
+	public DealerController() {}
 	
 	public void init() {
 		connection = TCPConnection.getInstance();

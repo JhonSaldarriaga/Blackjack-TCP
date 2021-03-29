@@ -1,20 +1,11 @@
 package main;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-import view.DealerWindow;
+import control.DealerController;
 
-public class Launcher extends Application{
+public class Launcher{
 
 	public static void main(String[] args) {
-		launch();
+		DealerController control = new DealerController();
+		control.init();
 	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		DealerWindow window = new DealerWindow();
-		window.show();
-		
-	}
-
 }

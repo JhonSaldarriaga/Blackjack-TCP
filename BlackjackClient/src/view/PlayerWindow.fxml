@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="421.0" prefWidth="477.0" xmlns="http://javafx.com/javafx/8.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="421.0" prefWidth="477.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button fx:id="stand" layoutX="241.0" layoutY="383.0" mnemonicParsing="false" prefWidth="224.0" text="Plantarme" />
       <Button fx:id="takeCard" layoutX="14.0" layoutY="383.0" mnemonicParsing="false" prefWidth="224.0" text="Pedir carta" />
@@ -17,29 +17,30 @@
          </font>
       </Label>
       <Label fx:id="status" layoutX="14.0" layoutY="31.0" text="Esperando al otro jugador..." />
+      <Label fx:id="status2" layoutX="14.0" layoutY="48.0" />
       <HBox alignment="CENTER" layoutX="-2.0" layoutY="150.0" prefHeight="96.0" prefWidth="480.0">
          <children>
-            <Label fx:id="card1" alignment="CENTER" prefHeight="90.0" prefWidth="60.0" style="-fx-border-color: black; -fx-background-color: gray;" text="A♠" textFill="WHITE">
+            <Label fx:id="card1" alignment="CENTER" prefHeight="90.0" prefWidth="60.0" style="-fx-border-color: black; -fx-background-color: gray;" textFill="WHITE">
                <HBox.margin>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="card2" alignment="CENTER" prefHeight="90.0" prefWidth="60.0" style="-fx-border-color: black; -fx-background-color: gray;" text="3♦" textFill="WHITE">
+            <Label fx:id="card2" alignment="CENTER" prefHeight="90.0" prefWidth="60.0" style="-fx-border-color: black; -fx-background-color: gray;" textFill="WHITE">
                <HBox.margin>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="card3" alignment="CENTER" prefHeight="90.0" prefWidth="60.0" style="-fx-border-color: black;" text="9♥">
+            <Label fx:id="card3" alignment="CENTER" prefHeight="90.0" prefWidth="60.0" style="-fx-border-color: black;">
                <HBox.margin>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="card4" alignment="CENTER" prefHeight="90.0" prefWidth="60.0" style="-fx-border-color: black;" text="K♠">
+            <Label fx:id="card4" alignment="CENTER" prefHeight="90.0" prefWidth="60.0" style="-fx-border-color: black;">
                <HBox.margin>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="card5" alignment="CENTER" prefHeight="90.0" prefWidth="60.0" style="-fx-border-color: black;" text="J♣">
+            <Label fx:id="card5" alignment="CENTER" prefHeight="90.0" prefWidth="60.0" style="-fx-border-color: black;">
                <HBox.margin>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </HBox.margin>
