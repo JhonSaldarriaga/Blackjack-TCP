@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="421.0" prefWidth="477.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="421.0" prefWidth="477.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button fx:id="stand" disable="true" layoutX="241.0" layoutY="383.0" mnemonicParsing="false" prefWidth="224.0" text="Plantarme" />
       <Button fx:id="takeCard" disable="true" layoutX="14.0" layoutY="383.0" mnemonicParsing="false" prefWidth="224.0" text="Pedir carta" />
@@ -62,5 +62,6 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
+      <Button fx:id="reset" disable="true" layoutX="204.0" layoutY="325.0" mnemonicParsing="false" text="REINICIAR" visible="false" />
    </children>
 </AnchorPane>

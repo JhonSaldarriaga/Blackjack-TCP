@@ -22,6 +22,7 @@ public class PlayerWindow extends Stage {
 	private Label status2;
 	private Button stand;
 	private Button takeCard;
+	private Button reset;
 	
 
 	public PlayerWindow() {
@@ -34,6 +35,7 @@ public class PlayerWindow extends Stage {
 
 			takeCard = (Button) loader.getNamespace().get("takeCard");
 			stand = (Button) loader.getNamespace().get("stand");
+			reset = (Button) loader.getNamespace().get("reset");
 			status = (Label) loader.getNamespace().get("status");
 			status2 = (Label) loader.getNamespace().get("status2");
 			cards = new Label[5];
@@ -75,5 +77,10 @@ public class PlayerWindow extends Stage {
 	public void setStatus(String status, boolean n) {
 		if(n)this.status.setText(status);
 		else this.status2.setText(status);
+	}
+	
+	public void activeResetButton(boolean b) {
+		reset.setDisable(!b);
+		reset.setVisible(b);
 	}
 }

@@ -1,7 +1,6 @@
 package control;
 
 import com.google.gson.Gson;
-
 import comm.Receptor.OnMessageListener;
 import comm.TCPConnection;
 import comm.TCPConnection.OnConnectionListener;
