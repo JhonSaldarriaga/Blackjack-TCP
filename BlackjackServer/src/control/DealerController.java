@@ -10,7 +10,7 @@ import model.Game;
 import model.PlayersDeckOfCards;
 import model.Game.EndGameListener;
 import model.Status;
-import model.TurnAction;
+import model.PlayerAction;
 
 public class DealerController implements OnMessageListener, OnConnectionListener, EndGameListener{
 	
@@ -54,16 +54,16 @@ public class DealerController implements OnMessageListener, OnConnectionListener
 	}
 
 	@Override
-	public void receiveTurnAction(String turnAction, String id) {
+	public void receivePlayerAction(String playerAction, String id) {
 		Gson gson = new Gson();
 		if(id.equals(player1ID)) {
-			TurnAction t = gson.fromJson(turnAction, TurnAction.class);
+			PlayerAction t = gson.fromJson(playerAction, PlayerAction.class);
 			switch(t.getAction()) {
-			case TurnAction.STAND:
+			case PlayerAction.STAND:
 				connection.sendDirectMessage(player1ID, gson.toJson(new Status(Status.STAND)));
 				if(game.getPlayerTwo()==null)connection.sendDirectMessage(player2ID, gson.toJson(new Status(Status.YOUR_TURN)));
 				break;
-			case TurnAction.TAKE_CARD:
+			case PlayerAction.TAKE_CARD:
 				connection.sendDirectMessage(player1ID, gson.toJson(deckOfCards.generateRandomCard()));
 				connection.sendDirectMessage(player1ID, gson.toJson(new Status(Status.OPPONENT_TURN)));
 				if(game.getPlayerTwo()!=null) {
@@ -83,13 +83,13 @@ public class DealerController implements OnMessageListener, OnConnectionListener
 			default: System.out.println("Se ha enviado una accion de turno invalida.");
 			}
 		}else if(id.equals(player2ID)) {
-			TurnAction t = gson.fromJson(turnAction, TurnAction.class);
+			PlayerAction t = gson.fromJson(playerAction, PlayerAction.class);
 			switch(t.getAction()) {
-			case TurnAction.STAND:
+			case PlayerAction.STAND:
 				connection.sendDirectMessage(player2ID, gson.toJson(new Status(Status.STAND)));
 				if(game.getPlayerOne()==null)connection.sendDirectMessage(player1ID, gson.toJson(new Status(Status.YOUR_TURN)));
 				break;
-			case TurnAction.TAKE_CARD:
+			case PlayerAction.TAKE_CARD:
 				connection.sendDirectMessage(player2ID, gson.toJson(deckOfCards.generateRandomCard()));
 				connection.sendDirectMessage(player2ID, gson.toJson(new Status(Status.OPPONENT_TURN)));
 				if(game.getPlayerOne()!=null) {

@@ -7,16 +7,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="421.0" prefWidth="477.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="421.0" prefWidth="477.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="stand" disable="true" layoutX="241.0" layoutY="383.0" mnemonicParsing="false" prefWidth="224.0" text="Plantarme" />
-      <Button fx:id="takeCard" disable="true" layoutX="14.0" layoutY="383.0" mnemonicParsing="false" prefWidth="224.0" text="Pedir carta" />
+      <Button fx:id="stand" disable="true" layoutX="241.0" layoutY="383.0" mnemonicParsing="false" prefWidth="224.0" text="STAND" />
+      <Button fx:id="takeCard" disable="true" layoutX="14.0" layoutY="383.0" mnemonicParsing="false" prefWidth="224.0" text="TAKE CARD" />
       <Label layoutX="14.0" layoutY="14.0" text="Status">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="status" layoutX="14.0" layoutY="31.0" text="Esperando al otro jugador..." />
+      <Label fx:id="status" layoutX="14.0" layoutY="31.0" text="Waiting opponent..." />
       <Label fx:id="status2" layoutX="14.0" layoutY="48.0" />
       <HBox alignment="CENTER" layoutX="-2.0" layoutY="150.0" prefHeight="96.0" prefWidth="480.0">
          <children>
@@ -47,17 +47,17 @@
             </Label>
          </children>
       </HBox>
-      <Label alignment="CENTER" layoutX="72.0" layoutY="249.0" prefHeight="17.0" prefWidth="127.0" style="-fx-background-color: black;" text="Cartas base" textFill="WHITE">
+      <Label alignment="CENTER" layoutX="72.0" layoutY="249.0" prefHeight="17.0" prefWidth="127.0" style="-fx-background-color: black;" text="Base cards" textFill="WHITE">
          <font>
             <Font size="10.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="209.0" layoutY="249.0" prefHeight="17.0" prefWidth="194.0" style="-fx-background-color: black;" text="Cartas adicionales" textFill="WHITE">
+      <Label alignment="CENTER" layoutX="209.0" layoutY="249.0" prefHeight="17.0" prefWidth="194.0" style="-fx-background-color: black;" text="Extra cards" textFill="WHITE">
          <font>
             <Font size="10.0" />
          </font>
       </Label>
-      <Label layoutX="211.0" layoutY="115.0" text="Mi Mano">
+      <Label layoutX="207.0" layoutY="115.0" text="My game">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

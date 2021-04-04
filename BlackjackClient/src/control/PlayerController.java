@@ -1,14 +1,15 @@
 package control;
 
 import com.google.gson.Gson;
+
 import comm.Receptor.OnMessageListener;
 import comm.TCPConnection;
 import comm.TCPConnection.OnConnectionListener;
 import javafx.application.Platform;
 import model.Card;
+import model.PlayerAction;
 import model.PlayersDeckOfCards;
 import model.Status;
-import model.TurnAction;
 import view.PlayerWindow;
 
 public class PlayerController implements OnMessageListener, OnConnectionListener{
@@ -34,7 +35,7 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 				event ->{
 					view.disableButtons(true);
 					Gson gson = new Gson();
-					String json = gson.toJson(new TurnAction(TurnAction.TAKE_CARD));
+					String json = gson.toJson(new PlayerAction(PlayerAction.TAKE_CARD));
 					connection.getEmisor().sendMessage(json);
 				}
 		);
@@ -43,7 +44,7 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 				event ->{
 					view.disableButtons(true);
 					Gson gson = new Gson();
-					String json = gson.toJson(new TurnAction(TurnAction.STAND));
+					String json = gson.toJson(new PlayerAction(PlayerAction.STAND));
 					connection.getEmisor().sendMessage(json);
 				}
 		);
@@ -54,7 +55,7 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 	public void cardSpaceFull() {
 		view.disableButtons(true);
 		Gson gson = new Gson();
-		String json = gson.toJson(new TurnAction(TurnAction.STAND));
+		String json = gson.toJson(new PlayerAction(PlayerAction.STAND));
 		connection.getEmisor().sendMessage(json);
 	}
 	

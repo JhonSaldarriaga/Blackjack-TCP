@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 
 import model.Generic;
 import model.PlayersDeckOfCards;
-import model.TurnAction;
+import model.PlayerAction;
 
 public class Receptor extends Thread{
 	
@@ -36,8 +36,8 @@ public class Receptor extends Thread{
 				Generic g = gson.fromJson(msg, Generic.class);
 				
 				switch(g.type) {
-				case TurnAction.TYPE_CLASS:
-					messageListener.receiveTurnAction(msg, id);
+				case PlayerAction.TYPE_CLASS:
+					messageListener.receivePlayerAction(msg, id);
 					break;
 				case PlayersDeckOfCards.TYPE_CLASS:
 					messageListener.receivePlayersDeckOfCards(msg, id);
@@ -62,7 +62,7 @@ public class Receptor extends Thread{
 	
 	
 	public interface OnMessageListener{
-		public void receiveTurnAction(String turnAction, String id); 
+		public void receivePlayerAction(String playerAction, String id); 
 		public void receivePlayersDeckOfCards(String playersDeckOfCards, String id);
 	}
 	
