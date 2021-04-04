@@ -9,10 +9,11 @@ import model.DealersDeckOfCards;
 import model.Game;
 import model.PlayersDeckOfCards;
 import model.Game.EndGameListener;
+import model.Game.ResetGameListener;
 import model.Status;
 import model.PlayerAction;
 
-public class DealerController implements OnMessageListener, OnConnectionListener, EndGameListener{
+public class DealerController implements OnMessageListener, OnConnectionListener, EndGameListener, ResetGameListener{
 	
 	private TCPConnection connection;
 	private Game game;
@@ -34,6 +35,7 @@ public class DealerController implements OnMessageListener, OnConnectionListener
 	private void startGame() {
 		game = new Game();
 		game.setEndGameListener(this);
+		game.setResetGameListener(this);
 		Gson gson = new Gson();
 		connection.sendDirectMessage(player1ID, gson.toJson(deckOfCards.generateRandomCard()));
 		connection.sendDirectMessage(player1ID, gson.toJson(deckOfCards.generateRandomCard()));
@@ -56,13 +58,16 @@ public class DealerController implements OnMessageListener, OnConnectionListener
 	@Override
 	public void receivePlayerAction(String playerAction, String id) {
 		Gson gson = new Gson();
-		if(id.equals(player1ID)) {
+		if(id.equals(player1ID)) {//PLAYER ONE
 			PlayerAction t = gson.fromJson(playerAction, PlayerAction.class);
+			//SWITCH SENTENCE
 			switch(t.getAction()) {
+			//CASE STAND
 			case PlayerAction.STAND:
 				connection.sendDirectMessage(player1ID, gson.toJson(new Status(Status.STAND)));
 				if(game.getPlayerTwo()==null)connection.sendDirectMessage(player2ID, gson.toJson(new Status(Status.YOUR_TURN)));
 				break;
+			//CASE TAKE CARD
 			case PlayerAction.TAKE_CARD:
 				connection.sendDirectMessage(player1ID, gson.toJson(deckOfCards.generateRandomCard()));
 				connection.sendDirectMessage(player1ID, gson.toJson(new Status(Status.OPPONENT_TURN)));
@@ -80,15 +85,24 @@ public class DealerController implements OnMessageListener, OnConnectionListener
 					).start();
 				}else connection.sendDirectMessage(player2ID, gson.toJson(new Status(Status.YOUR_TURN)));
 				break;
+			//CASE PLAY AGAIN	
+			case PlayerAction.PLAY_AGAIN:
+				connection.sendDirectMessage(player1ID, gson.toJson(new Status(Status.WAIT_PLAYAGAIN)));
+				game.playerOnePlayAgain();
+				break;
+			//DEFAULT
 			default: System.out.println("Se ha enviado una accion de turno invalida.");
 			}
-		}else if(id.equals(player2ID)) {
+		}else if(id.equals(player2ID)) {//PLAYER TWO
 			PlayerAction t = gson.fromJson(playerAction, PlayerAction.class);
+			//SWITCH SENTENCE
 			switch(t.getAction()) {
+			//CASE STAND
 			case PlayerAction.STAND:
 				connection.sendDirectMessage(player2ID, gson.toJson(new Status(Status.STAND)));
 				if(game.getPlayerOne()==null)connection.sendDirectMessage(player1ID, gson.toJson(new Status(Status.YOUR_TURN)));
 				break;
+			//CASE TAKE CARD
 			case PlayerAction.TAKE_CARD:
 				connection.sendDirectMessage(player2ID, gson.toJson(deckOfCards.generateRandomCard()));
 				connection.sendDirectMessage(player2ID, gson.toJson(new Status(Status.OPPONENT_TURN)));
@@ -106,6 +120,12 @@ public class DealerController implements OnMessageListener, OnConnectionListener
 					).start();
 				}else connection.sendDirectMessage(player1ID, gson.toJson(new Status(Status.YOUR_TURN)));
 				break;
+			//CASE PLAY AGAIN
+			case PlayerAction.PLAY_AGAIN:
+				connection.sendDirectMessage(player2ID, gson.toJson(new Status(Status.WAIT_PLAYAGAIN)));
+				game.playerTwoPlayAgain();
+				break;
+			//DEFAULT
 			default: System.out.println("Se ha enviado una accion de turno invalida.");
 			}
 		}
@@ -132,5 +152,10 @@ public class DealerController implements OnMessageListener, OnConnectionListener
 			connection.sendDirectMessage(player2ID, gson.toJson(new Status(Status.TIE, game.getPlayerTwo().countValue(), game.getPlayerOne().countValue())));
 			connection.sendDirectMessage(player1ID, gson.toJson(new Status(Status.TIE, game.getPlayerOne().countValue(), game.getPlayerTwo().countValue())));
 		}
+	}
+
+	@Override
+	public void resetGame() {
+		startGame();
 	}
 }

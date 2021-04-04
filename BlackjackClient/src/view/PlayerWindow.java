@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import model.Card;
+import model.Status;
 
 public class PlayerWindow extends Stage {
 
@@ -60,6 +61,10 @@ public class PlayerWindow extends Stage {
 		return takeCard;
 	}
 	
+	public Button getReset() {
+		return reset;
+	}
+	
 	public void disableButtons(boolean disable) {
 		takeCard.setDisable(disable);
 		stand.setDisable(disable);
@@ -82,5 +87,16 @@ public class PlayerWindow extends Stage {
 	public void activeResetButton(boolean b) {
 		reset.setDisable(!b);
 		reset.setVisible(b);
+	}
+	
+	public void resetGame() {
+		status2.setText("");
+		for(int i=0;i<cards.length;i++) {
+			if(cards[i].getText()!="") {
+				cards[i].setText("");
+			}
+		}
+		disableButtons(true);
+		activeResetButton(false);
 	}
 }

@@ -20,17 +20,17 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 	
 	public PlayerController(PlayerWindow view) {
 		this.view = view;
-		init();
-	}
-	
-	public void init() {
-		game = new PlayersDeckOfCards();
 		connection = TCPConnection.getInstance();
 		connection.setPuerto(5000);
 		connection.setIp("127.0.0.1");
 		connection.setConnectionListener(this);
 		connection.setListenerOfMessages(this);
-		
+		init();
+		connection.start();
+	}
+	
+	public void init() {
+		game = new PlayersDeckOfCards();
 		view.getTakeCard().setOnAction(
 				event ->{
 					view.disableButtons(true);
@@ -49,7 +49,25 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 				}
 		);
 		
-		connection.start();
+		view.getReset().setOnAction(
+				event -> {
+					view.disableButtons(true);
+					view.activeResetButton(false);
+					Gson gson = new Gson();
+					String json = gson.toJson(new PlayerAction(PlayerAction.PLAY_AGAIN));
+					connection.getEmisor().sendMessage(json);
+				}
+		);
+	}
+	
+	private void reset() {
+		game = new PlayersDeckOfCards();
+		Platform.runLater(
+				()->{
+					view.setStatus(Status.WAIT_PLAYAGAIN, true);
+					view.resetGame();
+				}
+		);
 	}
 
 	public void cardSpaceFull() {
@@ -112,6 +130,7 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 						view.setStatus(Status.WINNER, true);
 						view.setStatus(Status.OWN_SCORE + s.getOwnScore() + " \\ " 
 						+ Status.OPPONENT_SCORE + s.getOpponentScore(), false);
+						view.activeResetButton(true);
 					}
 			);
 			break;
@@ -121,6 +140,7 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 						view.setStatus(Status.LOSER, true);
 						view.setStatus(Status.OWN_SCORE + s.getOwnScore() + " \\ " 
 						+ Status.OPPONENT_SCORE + s.getOpponentScore(), false);
+						view.activeResetButton(true);
 					}
 			);
 			break;
@@ -130,10 +150,15 @@ public class PlayerController implements OnMessageListener, OnConnectionListener
 						view.setStatus(Status.TIE, true);
 						view.setStatus(Status.OWN_SCORE + s.getOwnScore() + " \\ " 
 						+ Status.OPPONENT_SCORE + s.getOpponentScore(), false);
+						view.activeResetButton(true);
 					}
 			);
 			break;
+		case Status.WAIT_PLAYAGAIN:
+			reset();
+			break;
 		default:
+			System.out.println("Error: Se ha recibido un status fake en player");
 		}
 	}
 }

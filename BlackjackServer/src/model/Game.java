@@ -3,9 +3,12 @@ package model;
 public class Game {
 
 	private EndGameListener endGameListener;
+	private ResetGameListener resetGameListener;
 	private final int BLACK_JACK=21;
 	private PlayersDeckOfCards playerOne;
 	private PlayersDeckOfCards playerTwo;
+	private boolean playerOnePlayAgain = false;
+	private boolean playerTwoPlayAgain = false;
 	
 	public void setPlayerOne(PlayersDeckOfCards playerOne) {
 		this.playerOne = playerOne;
@@ -15,6 +18,16 @@ public class Game {
 	public void setPlayerTwo(PlayersDeckOfCards playerTwo) {
 		this.playerTwo = playerTwo;
 		if(playerOne!=null)endGameListener.endGame();
+	}
+	
+	public void playerOnePlayAgain() {
+		playerOnePlayAgain = true;
+		if(playerTwoPlayAgain)resetGameListener.resetGame();
+	}
+
+	public void playerTwoPlayAgain() {
+		playerTwoPlayAgain = true;
+		if(playerOnePlayAgain)resetGameListener.resetGame();
 	}
 	
 	public PlayersDeckOfCards getPlayerOne() {
@@ -41,8 +54,16 @@ public class Game {
 	public void setEndGameListener(EndGameListener endGameListener) {
 		this.endGameListener = endGameListener;
 	}
+	
+	public void setResetGameListener(ResetGameListener resetGameListener) {
+		this.resetGameListener = resetGameListener;
+	}
 
 	public interface EndGameListener{
 		public void endGame();
+	}
+	
+	public interface ResetGameListener{
+		public void resetGame();
 	}
 }
